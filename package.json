@@ -1,0 +1,16 @@
+{
+  "name": "hk-culture-journal",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && uvicorn main:app --reload --port 3001",
+    "client": "cd client && npm run dev",
+    "install:all": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "import": "cd server/database && python import_data.py"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
