@@ -1,59 +1,85 @@
-# 香港文化手账 (HK Cultural Journal)
+# 香港文化手账 · HK Cultural Journal
 
-课程项目。收录香港电影和音乐的取景地，可以在地图上找地点、实地打卡、记手账。
+> 探索香港电影与音乐取景地，记录你的文化朝圣足迹。为香港文化爱好者提供香港流行文化的探索与社交打卡平台。
 
-演示视频：https://www.bilibili.com/video/BV1sGbk6TEvr
+**演示视频（Bilibili）：** [HK Cultural Journal 演示视频](https://www.bilibili.com/video/BV1sGbk6TEvr?vd_source=67fb983ed779b42653d894c05ebf57ba)
 
-## 功能
+---
 
-- 浏览电影/音乐作品，按区域、年份筛选，支持搜索
-- 地图查看取景地分布，可按作品筛选、定位当前位置
-- 走到收藏的取景地 100 米内会弹出打卡提醒（地理围栏）
-- 打卡支持拍照和写笔记；记录有四种看法：时间线 / 按作品 / 地图足迹 / 成就徽章
-- 收藏地点后，可以选几个点生成步行路线
-- 打卡记录能生成分享海报
-- 繁体 / 简体切换
+## 项目简介
 
-## 技术
+「香港文化手账」是一个以香港电影和音乐取景地为主题的全栈 Web 应用，其将香港 1067 个电影/音乐取景地从静态数据库变为可探索、可打卡、可分享的互动体验。用户可以在地图上探索经典取景地，收藏心愿地点，实地打卡记录，解锁成就徽章，并生成分享海报。
 
-前端 React + Vite + Tailwind + Zustand，地图用高德 JS API；后端 FastAPI + SQLite。
+### 核心功能
 
-有个坑要注意：数据库里存的是 WGS84 坐标，高德地图用的是 GCJ02，前后端转换用的是 gcoord 这个库，写新功能时别直接用原始坐标。
+| 模块 | 说明 |
+|------|------|
+| **作品浏览** | 按电影 / 音乐分类浏览，支持区域、年份筛选与关键词搜索 |
+| **地图探索** | 基于高德地图的取景地分布可视化，MarkerCluster 聚合，多维度筛选 |
+| **地理围栏打卡** | 靠近收藏地点 100 米内自动弹出打卡提醒 |
+| **路线规划** | 心愿单选点生成步行路线，显示总距离与预计时间 |
+| **个人手账** | 时间线 / 作品足迹 / 地图足迹 / 成就徽章四种视图 |
+| **心愿单** | 收藏管理，地图状态三色标记（灰=未收藏，黄=已收藏，绿=已打卡） |
+| **成就系统** | 里程碑、区域达人、导演影迷、音乐漫步多类徽章 |
+| **分享海报** | 打卡记录一键生成手账风格海报 |
+| **双语支持** | 繁体中文 / 简体中文自由切换 |
 
-## 跑起来
+---
 
-需要 Node.js 18+ 和 Python 3.10+。
+## 技术栈
+
+- **前端**：React 18 · Vite · Tailwind CSS · Zustand · React Router · 高德地图 JS API 2.0 · gcoord · html2canvas
+- **后端**：FastAPI · SQLite · pandas
+
+
+
+---
+
+## 本地运行
+
+### 环境要求
+- Node.js ≥ 18
+- Python ≥ 3.10
+
+### 1. 安装依赖
 
 ```bash
-# 前端依赖
-cd client && npm install
-
-# 后端依赖
-cd server && pip install -r requirements.txt
+cd client && npm install && cd ..
+cd server && pip install -r requirements.txt && cd ..
 ```
 
-在 `client/.env.local` 里填高德地图的 key：
+### 2. 配置高德地图 Key
+
+`client/.env.local`：
 
 ```
-VITE_AMAP_KEY=你的key
+VITE_AMAP_KEY=你的高德Key
 VITE_AMAP_SECURITY_CONFIG=你的安全密钥
 ```
 
-建库、导数据：
+### 3. 初始化数据库
 
 ```bash
-cd server/database
-sqlite3 hk_journal.db < schema.sql
-python import_data.py
+npm run import   # 建表并导入 data/ 下的 CSV
 ```
 
-启动（回到根目录）：
+### 4. 启动
 
 ```bash
-npm run dev   # 前后端一起起，后端 3001，前端 5173
+npm run dev      # 前后端一起启动，前端 5173，后端 3001
 ```
 
-## 说明
+地图页提供「测试模式」：开启后点击地图任意位置模拟当前位置，无需真实 GPS 即可体验围栏打卡全流程。
 
-- 仓库里只有代码。取景地原始数据（`data/`）、数据库文件和上传的图片都没有传上来。
-- 用户标识用的是设备 ID（localStorage 里的随机字符串），不用注册登录。
+---
+
+## 数据声明！！
+
+数据来源：香港浸会大学香港流行文化地图数据集，版权归属于香港浸会大学。本项目仓库仅包含源代码，取景地原始数据（`data/`）、运行时数据库与上传图片均不公开，请自备合规数据后通过 `npm run import` 导入。
+
+---
+
+## 项目文档
+
+- `docs/香港文化手账-代码Wiki.docx` — 代码级文档：架构、数据库、API、关键实现
+- `docs/香港文化手账-项目设计文档.docx` — 设计文档：需求分析、系统设计、技术方案、测试
